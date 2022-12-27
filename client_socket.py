@@ -1,15 +1,19 @@
 import socket
 
-host = socket.gethostname()
-port = 2000
-
-ClientSocket = socket.socket()
 print('** Ready to connect **')
+while True:
+    host = input('Enter server IP:\t')
+    port = 95
 
-try:
-    ClientSocket.connect((host, port))
-except socket.error as e:
-    print(str(e))
+    ClientSocket = socket.socket()
+
+    try:
+        ClientSocket.connect((host, port))
+        print('\t** Connected to server **')
+        # print(ClientSocket.getsockname())
+        break
+    except socket.error as e:
+        print("Incorrect IP or server is not running")
 
 while True:
     username = input("Enter username:\t")

@@ -1,12 +1,14 @@
 import socket
 from _thread import *
 import filesystem as fs
+from filesystem import clientInfo
 
 host = socket.gethostname()
-port = 2000
+print(socket.gethostbyname(host))
+port = 95
 ThreadCount = 0
 
-usernames = ['ahmad']
+usernames = ['admin']
 
 
 def client_handler(connection):
@@ -25,12 +27,12 @@ def client_handler(connection):
     while True:
         data = connection.recv(2048)
         message = data.decode('utf-8')
-        print(f'{username} --> ')
         fs.thread_function(message)
+        print(f"{username} --> {clientInfo['message']}")
         if message == 'BYE':
             print('\t** ' + username + ' has disconnected')
             break
-        reply = f'{username} --> {message} : SUCCESS'
+        reply = f"{username} --> {clientInfo['message']}"
         connection.sendall(str.encode(reply))
     usernames.remove(username)
     connection.close()
@@ -45,7 +47,7 @@ def accept_connections(ServerSocket):
 def start_server(host, port):
     ServerSocket = socket.socket()
     try:
-        ServerSocket.bind((host, port))
+        ServerSocket.bind((socket.gethostbyname(host), port))
     except socket.error as e:
         print(str(e))
     print(f'\n\t** Server is listing on the port {port} **')
